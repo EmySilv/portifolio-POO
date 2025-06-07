@@ -16,36 +16,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/models")
+@RequestMapping("/api/models")
 @CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*")
 public class ModelsController {
 
     @Autowired
     private ModelsServices modelsServices;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<Models> listModels() {
         return modelsServices.listModels();
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Models> createModel(@RequestBody Models model) {
         Models createdModel = modelsServices.saveModels(model);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdModel);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteModel(@RequestParam Integer id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteModel(@PathVariable Integer id) {
         modelsServices.deleteModels(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Models> updateModel(@PathVariable int id, @RequestBody Models model) {
         try {
             Models updatedModel = modelsServices.updateModels(id, model);

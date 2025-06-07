@@ -16,37 +16,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
 
 @RestController
-@RequestMapping("/brands")
+@RequestMapping("/api/brands")
 @CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*")
 public class BrandsController {
 
     @Autowired
     private BrandsServices brandsServices;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<Brands> listBrands() {
         return brandsServices.listBrands();
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Brands> saveBrands(@RequestBody Brands brand) {
         Brands createdBrand = brandsServices.saveBrands(brand);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBrand);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteBrands(@RequestParam Integer id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteBrands(@PathVariable Integer id) {
         brandsServices.deleteBrands(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Brands> updateBrands(@PathVariable int id, @RequestBody Brands brand) {
         try {
             Brands updatedBrand = brandsServices.updateBrands(id, brand);

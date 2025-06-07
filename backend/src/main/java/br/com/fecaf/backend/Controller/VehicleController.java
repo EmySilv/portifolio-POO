@@ -11,31 +11,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping("/api/vehicles")
 @CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*")
 public class VehicleController {
     
     @Autowired
     private VehicleServices vehicleServices;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<Vehicle> listVehicles() {
         return vehicleServices.listVehicles();
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Vehicle> saveVehicle(@RequestBody Vehicle vehicle){
         Vehicle saveVehicle = vehicleServices.saveVehicle(vehicle);
         return ResponseEntity.status(HttpStatus.CREATED).body(saveVehicle);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteVehicle(@RequestParam Integer id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable Integer id) {
         vehicleServices.deleteVehicle(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-    @PutMapping
+    @PutMapping("/update/{id}")
     public ResponseEntity<Vehicle> updateVehicle(@PathVariable int id, @RequestBody Vehicle vehicle) {
        try{
             Vehicle updatedVehicle = vehicleServices.updateVehicle(id, vehicle);
